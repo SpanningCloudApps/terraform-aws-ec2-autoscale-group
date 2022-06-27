@@ -477,6 +477,18 @@ variable "max_instance_lifetime" {
   description = "The maximum amount of time, in seconds, that an instance can be in service, values must be either equal to 0 or between 604800 and 31536000 seconds"
 }
 
+variable "create_before_destroy" {
+  type        = bool
+  default     = true
+  description = "Enable lifycycle policy create_before_destroy for ASG. Shoud uses with name_prefix"
+}
+
+variable "name" {
+  type        = string
+  default     = ""
+  description = "Set up static name for ASG and LaunchTemplate"
+}п
+
 variable "capacity_rebalance" {
   type        = bool
   default     = false

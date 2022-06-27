@@ -143,7 +143,8 @@ locals {
 resource "aws_autoscaling_group" "default" {
   count = module.this.enabled ? 1 : 0
 
-  name_prefix               = format("%s%s", module.this.id, module.this.delimiter)
+  name                      = ! var.create_before_destroy ? var.name : null
+  name_prefix               = var.create_before_destroy ? format("%s%s", module.this.id, module.this.delimiter) : null
   vpc_zone_identifier       = var.subnet_ids
   max_size                  = var.max_size
   min_size                  = var.min_size
@@ -251,7 +252,7 @@ resource "aws_autoscaling_group" "default" {
   ])
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = var.create_before_destroy
     ignore_changes        = [desired_capacity]
   }
 }
