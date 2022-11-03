@@ -24,7 +24,7 @@ module "subnets" {
 }
 
 module "autoscale_group" {
-  source = "../../"
+  source = "../.."
 
   image_id                      = var.image_id
   instance_type                 = var.instance_type
