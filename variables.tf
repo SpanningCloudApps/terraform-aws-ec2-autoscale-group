@@ -202,6 +202,12 @@ variable "default_cooldown" {
   default     = 300
 }
 
+variable "default_instance_warmup" {
+  type        = number
+  description = "Amount of time, in seconds, until a newly launched instance can contribute to the Amazon CloudWatch metrics."
+  default     = null
+}
+
 variable "health_check_grace_period" {
   type        = number
   description = "Time (in seconds) after instance comes into service before checking health"
