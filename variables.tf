@@ -499,6 +499,12 @@ variable "warm_pool" {
   default     = null
 }
 
+variable "initial_lifecycle_hooks" {
+  description = "One or more Initial Lifecycle Hooks to attach to the autoscaling group before instances are launched."
+  type        = map(string)
+  default     = {}
+}
+
 variable "create_before_destroy" {
   type        = bool
   default     = false

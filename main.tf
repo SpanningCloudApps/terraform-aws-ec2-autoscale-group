@@ -243,6 +243,19 @@ resource "aws_autoscaling_group" "default" {
     }
   }
 
+  dynamic "initial_lifecycle_hook" {
+    for_each = var.initial_lifecycle_hooks
+    content {
+      name                    = lookup(initial_lifecycle_hook.value, "name", initial_lifecycle_hook.key)
+      default_result          = lookup(initial_lifecycle_hook.value, "default_result", null)
+      heartbeat_timeout       = lookup(initial_lifecycle_hook.value, "heartbeat_timeout", null)
+      lifecycle_transition    = lookup(initial_lifecycle_hook.value, "lifecycle_transition", null)
+      notification_metadata   = lookup(initial_lifecycle_hook.value, "notification_metadata", null)
+      notification_target_arn = lookup(initial_lifecycle_hook.value, "notification_target_arn", null)
+      role_arn                = lookup(initial_lifecycle_hook.value, "role_arn", null)
+    }
+  }
+
   tags = flatten([
     for key in keys(module.this.tags) :
     {
