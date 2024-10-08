@@ -230,7 +230,7 @@ resource "aws_autoscaling_group" "default" {
             weighted_capacity = lookup(override.value, "weighted_capacity", null)
 
             dynamic "instance_requirements" {
-              for_each = lookup(override.value, "instance_requirements", {}) == {} ? [] : [override.value.instance_requirements]
+              for_each = override.value.instance_requirements != null ? [override.value.instance_requirements] : []
               content {
                 allowed_instance_types  = lookup(instance_requirements.value, "allowed_instance_types", null) # list(string)
                 excluded_instance_types = lookup(instance_requirements.value, "excluded_instance_types", null) # list(string)
@@ -256,7 +256,7 @@ resource "aws_autoscaling_group" "default" {
                 }
 
                 dynamic "memory_gib_per_vcpu" {
-                  for_each = lookup(instance_requirements.value, "memory_gib_per_vcpu", {}) == {} ? [] : [instance_requirements.value.memory_gib_per_vcpu]
+                  for_each = instance_requirements.value.memory_gib_per_vcpu != null ? [instance_requirements.value.memory_gib_per_vcpu] : []
                   content {
                     min = lookup(memory_gib_per_vcpu.value, "min", null)
                     max = lookup(memory_gib_per_vcpu.value, "max", null)
@@ -264,7 +264,7 @@ resource "aws_autoscaling_group" "default" {
                 }
 
                 dynamic "accelerator_count" {
-                  for_each = lookup(instance_requirements.value, "accelerator_count", {}) == {} ? [{ max = 0 }] : [instance_requirements.value.accelerator_count] # the default value excludes instance types with accelerators
+                  for_each = instance_requirements.value.accelerator_count != null ? [instance_requirements.value.accelerator_count] : [{ max = 0 }] # the default value excludes instance types with accelerators
                   content {
                     min = lookup(accelerator_count.value, "min", null)
                     max = lookup(accelerator_count.value, "max", null)

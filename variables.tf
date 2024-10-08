@@ -134,8 +134,37 @@ variable "mixed_instances_policy" {
       spot_max_price                           = string
     })
     override = list(object({
-      instance_type     = string
-      weighted_capacity = number
+      instance_type     = optional(string)
+      weighted_capacity = optional(number)
+
+      instance_requirements = optional(object({
+        allowed_instance_types  = optional(list(string))
+        excluded_instance_types = optional(list(string))
+        burstable_performance   = optional(string)
+        cpu_manufacturers       = optional(list(string))
+        instance_generations    = optional(list(string))
+        local_storage           = optional(string)
+
+        vcpu_count = optional(object({
+          min = number
+          max = optional(number)
+        }))
+
+        memory_mib = optional(object({
+          min = number
+          max = optional(number)
+        }))
+
+        memory_gib_per_vcpu = optional(object({
+          min = optional(number)
+          max = optional(number)
+        }))
+
+        accelerator_count = optional(object({
+          min = optional(number)
+          max = optional(number)
+        }))
+      }))
     }))
   })
   default = null
