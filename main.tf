@@ -228,6 +228,50 @@ resource "aws_autoscaling_group" "default" {
           content {
             instance_type     = lookup(override.value, "instance_type", null)
             weighted_capacity = lookup(override.value, "weighted_capacity", null)
+
+            dynamic "instance_requirements" {
+              for_each = lookup(override.value, "instance_requirements", {}) == {} ? [] : [override.value.instance_requirements]
+              content {
+                allowed_instance_types  = lookup(instance_requirements.value, "allowed_instance_types", null) # list(string)
+                excluded_instance_types = lookup(instance_requirements.value, "excluded_instance_types", null) # list(string)
+                burstable_performance   = lookup(instance_requirements.value, "burstable_performance", null)  # included, excluded, or required
+                cpu_manufacturers       = lookup(instance_requirements.value, "cpu_manufacturers", ["amd", "intel"])
+                instance_generations    = lookup(instance_requirements.value, "instance_generations", ["current"])
+                local_storage           = lookup(instance_requirements.value, "local_storage", "excluded")
+
+                dynamic "vcpu_count" {
+                  for_each = [instance_requirements.value.vcpu_count]
+                  content {
+                    min = lookup(vcpu_count.value, "min", null)
+                    max = lookup(vcpu_count.value, "max", null)
+                  }
+                }
+
+                dynamic "memory_mib" {
+                  for_each = [instance_requirements.value.memory_mib]
+                  content {
+                    min = lookup(memory_mib.value, "min", null)
+                    max = lookup(memory_mib.value, "max", null)
+                  }
+                }
+
+                dynamic "memory_gib_per_vcpu" {
+                  for_each = lookup(instance_requirements.value, "memory_gib_per_vcpu", {}) == {} ? [] : [instance_requirements.value.memory_gib_per_vcpu]
+                  content {
+                    min = lookup(memory_gib_per_vcpu.value, "min", null)
+                    max = lookup(memory_gib_per_vcpu.value, "max", null)
+                  }
+                }
+
+                dynamic "accelerator_count" {
+                  for_each = lookup(instance_requirements.value, "accelerator_count", {}) == {} ? [{ max = 0 }] : [instance_requirements.value.accelerator_count] # the default value excludes instance types with accelerators
+                  content {
+                    min = lookup(accelerator_count.value, "min", null)
+                    max = lookup(accelerator_count.value, "max", null)
+                  }
+                }
+              }
+            }
           }
         }
       }
