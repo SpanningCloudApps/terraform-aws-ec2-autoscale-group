@@ -143,7 +143,7 @@ locals {
 resource "aws_autoscaling_group" "default" {
   count = module.this.enabled ? 1 : 0
 
-  name                      = ! var.create_before_destroy ? var.name : null
+  name                      = !var.create_before_destroy ? var.name : null
   name_prefix               = var.create_before_destroy ? format("%s%s", module.this.id, module.this.delimiter) : null
   vpc_zone_identifier       = var.subnet_ids
   max_size                  = var.max_size
@@ -233,8 +233,8 @@ resource "aws_autoscaling_group" "default" {
               for_each = override.value.instance_requirements != null ? [override.value.instance_requirements] : []
               content {
                 allowed_instance_types  = lookup(instance_requirements.value, "allowed_instance_types", null) # list(string)
-                excluded_instance_types = lookup(instance_requirements.value, "excluded_instance_types", null) # list(string)
-                burstable_performance   = lookup(instance_requirements.value, "burstable_performance", null)  # included, excluded, or required
+                excluded_instance_types = lookup(instance_requirements.value, "excluded_instance_types", ["*i*"])
+                burstable_performance   = lookup(instance_requirements.value, "burstable_performance", null) # included, excluded, or required
                 cpu_manufacturers       = lookup(instance_requirements.value, "cpu_manufacturers", ["amd", "intel"])
                 instance_generations    = lookup(instance_requirements.value, "instance_generations", ["current"])
                 local_storage           = lookup(instance_requirements.value, "local_storage", "excluded")
