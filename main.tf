@@ -233,7 +233,7 @@ resource "aws_autoscaling_group" "default" {
               for_each = override.value.instance_requirements != null ? [override.value.instance_requirements] : []
               content {
                 allowed_instance_types  = instance_requirements.value.allowed_instance_types
-                excluded_instance_types = instance_requirements.value.excluded_instance_types != null ? instance_requirements.value.excluded_instance_types : ["*i*"]
+                excluded_instance_types = instance_requirements.value.excluded_instance_types
                 burstable_performance   = instance_requirements.value.burstable_performance
                 cpu_manufacturers       = instance_requirements.value.cpu_manufacturers != null ? instance_requirements.value.cpu_manufacturers : ["amd", "intel"]
                 instance_generations    = instance_requirements.value.instance_generations != null ? instance_requirements.value.instance_generations : ["current"]
