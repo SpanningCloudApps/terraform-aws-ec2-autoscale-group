@@ -140,7 +140,7 @@ variable "mixed_instances_policy" {
       instance_requirements = optional(object({
         allowed_instance_types  = optional(list(string))
         excluded_instance_types = optional(list(string))
-        burstable_performance   = optional(string)
+        burstable_performance   = optional(string) # included, excluded, or required
         cpu_manufacturers       = optional(list(string))
         instance_generations    = optional(list(string))
         local_storage           = optional(string)

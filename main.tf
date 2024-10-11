@@ -226,18 +226,18 @@ resource "aws_autoscaling_group" "default" {
           for_each = (mixed_instances_policy.value.override != null ?
           mixed_instances_policy.value.override : [])
           content {
-            instance_type     = lookup(override.value, "instance_type", null)
-            weighted_capacity = lookup(override.value, "weighted_capacity", null)
+            instance_type     = override.value.instance_type
+            weighted_capacity = override.value.weighted_capacity
 
             dynamic "instance_requirements" {
               for_each = override.value.instance_requirements != null ? [override.value.instance_requirements] : []
               content {
-                allowed_instance_types  = lookup(instance_requirements.value, "allowed_instance_types", null) # list(string)
-                excluded_instance_types = lookup(instance_requirements.value, "excluded_instance_types", ["*i*"])
-                burstable_performance   = lookup(instance_requirements.value, "burstable_performance", null) # included, excluded, or required
-                cpu_manufacturers       = lookup(instance_requirements.value, "cpu_manufacturers", ["amd", "intel"])
-                instance_generations    = lookup(instance_requirements.value, "instance_generations", ["current"])
-                local_storage           = lookup(instance_requirements.value, "local_storage", "excluded")
+                allowed_instance_types  = instance_requirements.value.allowed_instance_types
+                excluded_instance_types = instance_requirements.value.excluded_instance_types != null ? instance_requirements.value.excluded_instance_types : ["*i*"]
+                burstable_performance   = instance_requirements.value.burstable_performance
+                cpu_manufacturers       = instance_requirements.value.cpu_manufacturers != null ? instance_requirements.value.cpu_manufacturers : ["amd", "intel"]
+                instance_generations    = instance_requirements.value.instance_generations != null ? instance_requirements.value.instance_generations : ["current"]
+                local_storage           = instance_requirements.value.local_storage != null ? instance_requirements.value.local_storage : "excluded"
 
                 dynamic "vcpu_count" {
                   for_each = [instance_requirements.value.vcpu_count]
