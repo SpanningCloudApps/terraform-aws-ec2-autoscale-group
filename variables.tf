@@ -445,6 +445,12 @@ variable "desired_capacity" {
   default     = null
 }
 
+variable "desired_capacity_type" {
+  type        = string
+  description = "The unit of measurement for the value specified for desired_capacity. Supported for attribute-based instance type selection only. Valid values: `units`, `vcpu`, `memory-mib`"
+  default     = null
+}
+
 variable "default_alarms_enabled" {
   type        = bool
   default     = true

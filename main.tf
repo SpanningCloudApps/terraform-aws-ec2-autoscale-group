@@ -166,6 +166,7 @@ resource "aws_autoscaling_group" "default" {
   protect_from_scale_in     = var.protect_from_scale_in
   service_linked_role_arn   = var.service_linked_role_arn
   desired_capacity          = var.desired_capacity
+  desired_capacity_type     = var.desired_capacity_type
   max_instance_lifetime     = var.max_instance_lifetime
   capacity_rebalance        = var.capacity_rebalance
 

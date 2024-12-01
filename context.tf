@@ -21,7 +21,7 @@
 #
 
 module "this" {
-  source  = "./modules/terraform-null-label-0.25.0"
+  source = "./modules/terraform-null-label-0.25.0"
 
   enabled             = var.enabled
   namespace           = var.namespace
