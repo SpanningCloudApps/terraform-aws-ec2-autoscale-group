@@ -311,7 +311,7 @@ resource "aws_autoscaling_group" "default" {
   }
 
   lifecycle {
-    create_before_destroy = false #TODO harcoded this value only from opened request to terraform https://github.com/hashicorp/terraform/issues/24188
+    create_before_destroy = var.create_before_destroy
     ignore_changes        = [desired_capacity]
   }
 }
