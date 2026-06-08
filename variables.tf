@@ -514,7 +514,7 @@ variable "metadata_instance_metadata_tags_enabled" {
 
 variable "tag_specifications_resource_types" {
   type        = set(string)
-  default     = ["instance", "volume"]
+  default     = ["instance", "volume", "spot-instances-request"]
   description = "List of tag specification resource types to tag. Valid values are instance, volume, elastic-gpu and spot-instances-request."
 }
 
